@@ -1,0 +1,27 @@
+{
+  "name": "hobbytan-council-open",
+  "version": "1.0.0",
+  "description": "> **\"당신과 AI기술 사이, 하비탄AI.\"**",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devpablokim/hobbytan-council-open.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/devpablokim/hobbytan-council-open/issues"
+  },
+  "homepage": "https://github.com/devpablokim/hobbytan-council-open#readme",
+  "dependencies": {
+    "firebase-admin": "^13.6.1"
+  }
+}
