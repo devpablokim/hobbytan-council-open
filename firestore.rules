@@ -2,10 +2,13 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /clients/{clientId}/chronicles/{docId} {
-      // Allow read if user is authenticated (MVP: simple check)
-      // Production: check request.auth.token.clientId == clientId
-      allow read: if request.auth != null; 
-      allow write: if false; // Only Admin SDK (Backend) can write
+      // 1. Allow read if user is authenticated
+      // 2. HEADQUARTER restriction: Only tanhyu.kim@gmail.com and approved list
+      allow read: if request.auth != null && 
+                  (clientId != 'HEADQUARTER' || 
+                   request.auth.token.email == 'tanhyu.kim@gmail.com' ||
+                   request.auth.token.email in ['devpablokim@gmail.com']); // Add more admins here
+      allow write: if false; // Only Admin SDK can write
     }
   }
 }
