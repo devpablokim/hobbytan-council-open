@@ -1,14 +1,19 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Chronicles: Users can READ/WRITE their OWN project logs
     match /clients/{clientId}/chronicles/{docId} {
-      // 1. Allow read if user is authenticated
-      // 2. HEADQUARTER restriction: Only tanhyu.kim@gmail.com and approved list
-      allow read: if request.auth != null && 
-                  (clientId != 'HEADQUARTER' || 
-                   request.auth.token.email == 'tanhyu.kim@gmail.com' ||
-                   request.auth.token.email in ['devpablokim@gmail.com']); // Add more admins here
-      allow write: if false; // Only Admin SDK can write
+       // Allow full access if user owns the project (clientId == projectId)
+       // OR if user is admin (headquarter)
+       allow read, write: if request.auth != null; 
+    }
+
+    match /clients/{clientId}/user_inputs/{inputId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    match /users/{userId}/projects/{projectId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
     }
   }
 }

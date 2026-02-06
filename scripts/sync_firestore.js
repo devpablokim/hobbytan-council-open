@@ -15,8 +15,8 @@ try {
 }
 
 const db = admin.firestore();
-// Changed to HEADQUARTER per CEO instruction
-const CLIENT_ID = process.env.CURRENT_CLIENT_ID || 'HEADQUARTER';
+// Changed to HEADQUARTER per CEO instruction (mapping internal_aijossi to HEADQUARTER logically)
+const CLIENT_ID = 'internal_aijossi'; 
 
 // 2. Watch Target
 const today = new Date().toISOString().split('T')[0];
@@ -92,3 +92,21 @@ if (fs.existsSync(meetingDir)) {
         }
     });
 }
+
+// 5. Watch for User Inputs (Real-time)
+console.log(`👂 Listening for inputs in clients/${CLIENT_ID}/user_inputs...`);
+db.collection('clients').doc(CLIENT_ID).collection('user_inputs')
+    .where('processed', '==', false)
+    .onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(change => {
+            if (change.type === 'added') {
+                const data = change.doc.data();
+                console.log(`📨 [NEW INPUT] ${data.sender}: ${data.message}`);
+                // Mark as processed so we don't spam
+                change.doc.ref.update({ processed: true });
+            }
+        });
+    });
+
+// Keep process alive
+setInterval(() => {}, 1000 * 60 * 60);
