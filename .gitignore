@@ -1,55 +1,9 @@
-# Dependencies
+# .gitignore
 node_modules/
-.pnp
-.pnp.js
-
-# Metadata (CRITICAL: Do not commit to Sanctuary)
-AGENTS.md
-BOOTSTRAP.md
-HEARTBEAT.md
-IDENTITY.md
-SOUL.md
-TOOLS.md
-USER.md
-MEMORY.md
-memory/
-*.txt
-
-# OpenClaw Internal
-.openclaw/
-workspace/
-
-# Testing
-coverage/
-
-# Next.js
-.next/
-out/
-
-# Production
-build/
-
-# Misc
-.DS_Store
-*.pem
-
-# Env
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Vercel
-.vercel
-
-# TypeScript
-*.tsbuildinfo
-next-env.d.ts
-
-# Flutter
-.dart_tool/
-.packages
-.pub-cache/
-.pub/
+.DS_Store
+serviceAccountKey.json
+*.log
+.firebase/
 build/
+dist/

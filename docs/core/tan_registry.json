@@ -1,0 +1,88 @@
+{
+  "TAN_REGISTRY": {
+    "PO-TAN": {
+      "role": "Product Owner",
+      "model": "claude-3-5-sonnet",
+      "temperature": 0.7,
+      "profileImage": "/assets/profiles/po.png",
+      "systemPromptPath": "docs/core/role/ROLE_PO.md"
+    },
+    "DEV-TAN": {
+      "role": "Developer",
+      "model": "gpt-4-turbo",
+      "temperature": 0.2,
+      "profileImage": "/assets/profiles/dev.png",
+      "systemPromptPath": "docs/core/role/ROLE_DEV.md"
+    },
+    "UX-TAN": {
+      "role": "Designer",
+      "model": "gemini-1.5-pro",
+      "temperature": 0.8,
+      "profileImage": "/assets/profiles/ux.png",
+      "systemPromptPath": "docs/core/role/ROLE_UX.md"
+    },
+    "LEGAL-TAN": {
+      "role": "Legal Advisor",
+      "model": "gpt-4",
+      "temperature": 0.1,
+      "profileImage": "/assets/profiles/legal.png",
+      "systemPromptPath": "docs/core/role/ROLE_LEGAL.md"
+    },
+    "MARKETING-TAN": {
+      "role": "Marketer",
+      "model": "claude-3-opus",
+      "temperature": 0.9,
+      "profileImage": "/assets/profiles/marketing.png",
+      "systemPromptPath": "docs/core/role/ROLE_MARKETING.md"
+    },
+    "HR-TAN": {
+      "role": "Human Resources",
+      "model": "gpt-4",
+      "temperature": 0.5,
+      "profileImage": "/assets/profiles/hr.png",
+      "systemPromptPath": "docs/core/role/ROLE_HR.md"
+    },
+    "PM-TAN": {
+      "role": "Project Manager",
+      "model": "gpt-3.5-turbo",
+      "temperature": 0.5,
+      "profileImage": "/assets/profiles/pm.png",
+      "systemPromptPath": "docs/core/role/ROLE_PM.md"
+    },
+    "BA-TAN": {
+      "role": "Business Analyst",
+      "model": "gpt-4",
+      "temperature": 0.3,
+      "profileImage": "/assets/profiles/ba.png",
+      "systemPromptPath": "docs/core/role/ROLE_BA.md"
+    },
+    "CS-TAN": {
+      "role": "Customer Success",
+      "model": "gpt-3.5-turbo",
+      "temperature": 0.8,
+      "profileImage": "/assets/profiles/cs.png",
+      "systemPromptPath": "docs/core/role/ROLE_CS.md"
+    },
+    "QA-TAN": {
+      "role": "Quality Assurance",
+      "model": "gpt-4",
+      "temperature": 0.1,
+      "profileImage": "/assets/profiles/qa.png",
+      "systemPromptPath": "docs/core/role/ROLE_QA.md"
+    },
+    "RESEARCHER-TAN": {
+      "role": "Market Researcher",
+      "model": "perplexity-sonar",
+      "temperature": 0.4,
+      "profileImage": "/assets/profiles/researcher.png",
+      "systemPromptPath": "docs/core/role/ROLE_RESEARCHER.md"
+    },
+    "ATTENDANT-TAN": {
+      "role": "Attendant (DEO)",
+      "model": "gpt-4-turbo",
+      "temperature": 0.0,
+      "profileImage": "/assets/profiles/attendant.png",
+      "systemPromptPath": "docs/core/role/ROLE_ATTENDANT.md"
+    }
+  }
+}
