@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOBBYTAN-COUNCIL: The Boardroom (Live)</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-green: #0aff00;
+            --bg-color: #050505;
+            --panel-bg: rgba(20, 20, 20, 0.9);
+            --text-main: #e0e0e0;
+            --text-dim: #555;
+            --border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'JetBrains Mono', monospace;
+            margin: 0; padding: 20px;
+            height: 100vh; overflow: hidden;
+            display: grid;
+            grid-template-rows: 60px 1fr;
+            gap: 20px;
+        }
+        header {
+            border-bottom: var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 20px;
+        }
+        .brand { font-size: 1.5rem; font-weight: bold; color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
+        .status { font-size: 0.8rem; color: var(--neon-green); }
+        
+        #terminal-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            height: 100%;
+        }
+        
+        .sidebar {
+            border: var(--border);
+            background: var(--panel-bg);
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .main-log {
+            border: var(--border);
+            background: var(--panel-bg);
+            padding: 20px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .log-entry { margin-bottom: 15px; border-left: 3px solid var(--text-dim); padding-left: 10px; }
+        .log-time { color: var(--text-dim); font-size: 0.75rem; }
+        .log-author { color: var(--neon-blue); font-weight: bold; }
+        .log-content { margin-top: 5px; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-track { background: #000; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">HOBBYTAN-COUNCIL: THE BOARDROOM</div>
+        <div class="status">● LIVE CONNECTION: GITHUB SANCTUARY</div>
+    </header>
+
+    <div id="terminal-container">
+        <div class="sidebar">
+            <h3 style="color: var(--neon-green); border-bottom: 1px solid #333; padding-bottom: 10px;">ACTIVE TAN NODES</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 10px;">🟢 PO-TAN (Strategy)</li>
+                <li style="margin-bottom: 10px;">🟢 PM-TAN (Schedule)</li>
+                <li style="margin-bottom: 10px;">🟢 DEV-TAN (Tech)</li>
+                <li style="margin-bottom: 10px;">🟢 UX-TAN (Design)</li>
+                <li style="margin-bottom: 10px;">🟢 RESEARCHER-TAN (Data)</li>
+                <li style="margin-bottom: 10px;">🟢 LEGAL-TAN (Risk)</li>
+                <li style="margin-bottom: 10px;">🟢 MARKETING-TAN (Viral)</li>
+            </ul>
+        </div>
+        <div class="main-log" id="log-viewer">
+            <div style="text-align: center; margin-top: 20px; color: var(--text-dim);">
+                Fetching Chronicle from Sanctuary...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const REPO_OWNER = 'devpablokim';
+        const REPO_NAME = 'hobbytan-council';
+        const FILE_PATH = 'docs/chronicle/daily/2026-02-06.md'; // Dynamic date needed in production
+        const BRANCH = 'main';
+
+        async function fetchChronicle() {
+            try {
+                const response = await fetch(`https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${FILE_PATH}`);
+                if (!response.ok) throw new Error("Failed to fetch sanctuary logs");
+                const text = await response.text();
+                renderLogs(text);
+            } catch (err) {
+                document.getElementById('log-viewer').innerHTML = `<span style="color: red;">[ERROR] Connection to Sanctuary Failed: ${err.message}</span>`;
+            }
+        }
+
+        function renderLogs(markdown) {
+            const viewer = document.getElementById('log-viewer');
+            // Simple parsing to highlight speakers (customize as needed)
+            const html = marked.parse(markdown);
+            viewer.innerHTML = html;
+            
+            // Auto-scroll to bottom
+            viewer.scrollTop = viewer.scrollHeight;
+        }
+
+        // Poll every 10 seconds
+        fetchChronicle();
+        setInterval(fetchChronicle, 10000);
+    </script>
+</body>
+</html>
