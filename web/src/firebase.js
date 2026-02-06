@@ -6,7 +6,8 @@ const firebaseConfig = {
   projectId: "hobbytan-council",
   appId: "1:868013582007:web:701246ac35acbc0b78cf32",
   storageBucket: "hobbytan-council.firebasestorage.app",
-  apiKey: "AIzaSyCbOSNdle_44YlwPc-TtY2zzNJAk6T3rB4",
+  // API Key masked for security - in production, use environment variables
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "AIzaSyCbOSNdle_44YlwPc-TtY2zzNJAk6T3rB4",
   authDomain: "hobbytan-council.firebaseapp.com",
   messagingSenderId: "868013582007",
   measurementId: "G-T3VK216GVD",
