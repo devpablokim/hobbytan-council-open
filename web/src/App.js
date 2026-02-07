@@ -1,8 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import LandingPage from './components/LandingPage';
-import Boardroom from './components/Boardroom';
-import Dashboard from './components/Dashboard';
+import LandingPage from './pages/LandingPage';
+import Boardroom from './pages/Boardroom';
+import Dashboard from './pages/Dashboard';
+import Academy from './pages/Academy';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/academy" element={<Academy />} />
         <Route path="/boardroom/:projectId" element={<Boardroom />} />
         {/* Default redirect */}
         <Route path="/boardroom" element={<Navigate to="/dashboard" replace />} />
