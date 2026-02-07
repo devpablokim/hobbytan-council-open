@@ -1,8 +1,10 @@
+// InquiryForm.js (Update with Checkbox & Spinner)
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { getFirestore, addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebase'; // Ensure firebase is initialized
+import { db } from '../firebase'; 
 
+// ... existing styled components ...
 const FormContainer = styled.div`
   max-width: 600px;
   margin: 60px auto;
@@ -39,13 +41,10 @@ const Input = styled.input`
   color: #fff;
   padding: 12px;
   border-radius: 4px;
-  font-family: inherit;
+  font-family: 'Pretendard', sans-serif;
   box-sizing: border-box;
   
-  &:focus {
-    outline: none;
-    border-color: #00f3ff;
-  }
+  &:focus { outline: none; border-color: #00f3ff; }
 `;
 
 const Select = styled.select`
@@ -55,7 +54,7 @@ const Select = styled.select`
   color: #fff;
   padding: 12px;
   border-radius: 4px;
-  font-family: inherit;
+  font-family: 'Pretendard', sans-serif;
   box-sizing: border-box;
 `;
 
@@ -66,15 +65,29 @@ const TextArea = styled.textarea`
   color: #fff;
   padding: 12px;
   border-radius: 4px;
-  font-family: inherit;
+  font-family: 'Pretendard', sans-serif;
   min-height: 100px;
   resize: vertical;
   box-sizing: border-box;
 
-  &:focus {
-    outline: none;
-    border-color: #00f3ff;
-  }
+  &:focus { outline: none; border-color: #00f3ff; }
+`;
+
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+const Spinner = styled.div`
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top: 3px solid #fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: ${spin} 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
 `;
 
 const SubmitButton = styled.button`
@@ -88,17 +101,23 @@ const SubmitButton = styled.button`
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  &:hover {
-    background: #fff;
-    transform: translateY(-2px);
-  }
+  &:hover { background: #fff; transform: translateY(-2px); }
+  &:disabled { background: #333; color: #666; cursor: not-allowed; transform: none; }
+`;
+
+const CheckboxGroup = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+  font-size: 0.8rem;
+  color: #aaa;
   
-  &:disabled {
-    background: #333;
-    color: #666;
-    cursor: not-allowed;
-  }
+  input { margin-top: 3px; }
 `;
 
 const InquiryForm = () => {
@@ -107,16 +126,22 @@ const InquiryForm = () => {
     contact: '',
     job: 'other',
     painPoint: 'time',
-    message: ''
+    message: '',
+    agreement: false // Checkbox state
   });
-  const [status, setStatus] = useState('idle'); // idle, submitting, success, error
+  const [status, setStatus] = useState('idle');
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    setFormData({ ...formData, [e.target.name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.agreement) {
+        alert("개인정보 수집 및 이용에 동의해야 합니다.");
+        return;
+    }
     if (!formData.name || !formData.contact) {
       alert("이름과 연락처는 필수입니다.");
       return;
@@ -131,7 +156,7 @@ const InquiryForm = () => {
       });
       setStatus('success');
       alert("문의가 접수되었습니다. AI Council이 곧 분석을 시작합니다.");
-      setFormData({ name: '', contact: '', job: 'other', painPoint: 'time', message: '' });
+      setFormData({ name: '', contact: '', job: 'other', painPoint: 'time', message: '', agreement: false });
     } catch (err) {
       console.error("Submission failed:", err);
       setStatus('error');
@@ -176,8 +201,18 @@ const InquiryForm = () => {
           <Label>추가 문의사항 (Message)</Label>
           <TextArea name="message" value={formData.message} onChange={handleChange} placeholder="궁금한 점을 자유롭게 적어주세요." />
         </InputGroup>
+        
+        <CheckboxGroup>
+            <input type="checkbox" name="agreement" checked={formData.agreement} onChange={handleChange} required />
+            <label>
+                [필수] 개인정보 수집 및 이용 동의<br/>
+                수집된 정보(이름, 연락처)는 상담 목적으로만 사용되며, 
+                법령에 따라 안전하게 보관됩니다.
+            </label>
+        </CheckboxGroup>
+
         <SubmitButton type="submit" disabled={status === 'submitting'}>
-          {status === 'submitting' ? 'TRANSMITTING...' : 'SEND INQUIRY'}
+          {status === 'submitting' ? <><Spinner /> TRANSMITTING...</> : 'SEND INQUIRY'}
         </SubmitButton>
       </form>
     </FormContainer>

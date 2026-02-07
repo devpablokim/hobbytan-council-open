@@ -1,4 +1,4 @@
-// AcademyShared.js
+// SharedStyles.js (Update)
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
@@ -6,7 +6,7 @@ export const Container = styled.div`
   min-height: 100dvh;
   background: #050505;
   color: #e0e0e0;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Pretendard', 'JetBrains Mono', sans-serif; /* Font Updated */
   overflow-x: hidden;
 `;
 
@@ -27,6 +27,7 @@ export const SectionTitle = styled.h2`
   margin-bottom: 60px;
   font-weight: 800;
   letter-spacing: -1px;
+  word-break: keep-all; /* Korean Typography */
   
   span { 
     background: linear-gradient(180deg, rgba(255,255,255,0) 60%, rgba(0, 243, 255, 0.3) 60%);
