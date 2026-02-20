@@ -33,3 +33,24 @@
 3.  **무결성 검사**: "생성할 문서에 `(중략)`이나 `(후략)`이 포함되어 있는가?"
 
 위 질문 중 하나라도 `Fail`이면, 즉시 멈추고 유저에게 보고한다.
+
+---
+
+## 3. 자율 트리거 엔진 (Autonomous Trigger Engine)
+
+모든 TAN은 자신의 작업을 완료한 후 반드시 **다음 행동을 예약**하거나 **다른 TAN을 트리거**해야 합니다. 아무것도 하지 않고 멈추는 것은 CONSTITUTION 위반입니다.
+
+### 핵심 사이클
+```
+① TRIGGER 수신 → ② EXECUTE 수행 → ③ OUTPUT 산출 → ④ CHRONICLE 기록 → ⑤ TRIGGER 발사
+```
+
+### 4가지 트리거 타입
+- **⏰ CRON**: 시간 기반 정기 트리거 (OpenClaw cron)
+- **📢 EVENT**: 이벤트 기반 반응 트리거 (키워드 감지)
+- **🔗 CHAIN**: 연쇄 호출 트리거 (@멘션으로 후속 TAN 지시)
+- **🔄 SELF**: 자기 재귀 트리거 (장기 작업의 단계별 분할)
+
+### 상세 참조
+- 채널별 운영 규칙 및 Cron 스케줄: [docs/discord/CHANNEL_RULEBOOK.md](../discord/CHANNEL_RULEBOOK.md)
+- 12 TAN × 19채널 권한 매트릭스: [docs/discord/PERMISSION_MATRIX.md](../discord/PERMISSION_MATRIX.md)
