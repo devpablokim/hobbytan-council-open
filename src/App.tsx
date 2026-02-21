@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from './hooks/useAuth';
+import { Layout } from './components/Layout';
+import { LoginPage } from './pages/LoginPage';
+import { DashboardPage } from './pages/DashboardPage';
+import { CurriculumPage } from './pages/CurriculumPage';
+import { TeamDetailPage } from './pages/TeamDetailPage';
+import { SubmitPage } from './pages/SubmitPage';
+import { CommunityPage } from './pages/CommunityPage';
+import { AdminPage } from './pages/AdminPage';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const { isLoggedIn, currentUser, role, login, logout, switchRole } = useAuth();
+
+  if (!isLoggedIn || !currentUser) {
+    return (
+      <BrowserRouter basename="/superworkshop">
+        <LoginPage onLogin={login} />
+      </BrowserRouter>
+    );
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <BrowserRouter basename="/superworkshop">
+      <Routes>
+        <Route element={<Layout user={currentUser} role={role} onSwitchRole={switchRole} onLogout={logout} />}>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<DashboardPage user={currentUser} role={role} />} />
+          <Route path="/curriculum" element={<CurriculumPage user={currentUser} role={role} />} />
+          <Route path="/team/:id" element={<TeamDetailPage />} />
+          <Route path="/submit" element={<SubmitPage />} />
+          <Route path="/community" element={<CommunityPage />} />
+          {role === 'admin' && <Route path="/admin" element={<AdminPage />} />}
+        </Route>
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
-
-export default App
