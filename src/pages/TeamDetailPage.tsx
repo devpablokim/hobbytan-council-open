@@ -10,7 +10,14 @@ export function TeamDetailPage() {
   const teamSubmissions = submissions.filter(s => s.teamId === id);
   const weekKeys = ['week0','week1','week2','week3','week4','week5'] as const;
 
-  if (!team) return <div className="text-center py-12 text-gray-500">팀을 찾을 수 없습니다.</div>;
+  if (!team) return (
+    <div className="text-center py-20">
+      <div className="text-5xl mb-4">🔍</div>
+      <h2 className="text-xl font-bold text-gray-900 mb-2">팀을 찾을 수 없습니다</h2>
+      <p className="text-gray-500 mb-4">요청한 팀 ID({id})가 존재하지 않습니다.</p>
+      <a href="/dashboard" className="text-indigo-600 hover:text-indigo-800 text-sm">← 대시보드로 돌아가기</a>
+    </div>
+  );
 
   return (
     <div>

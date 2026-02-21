@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Role, User } from '../types';
-import { teams, users, cohort, curriculum } from '../data/mockData';
+import { teams, users, cohort, curriculum, submissions } from '../data/mockData';
 import { ProgressBar } from '../components/ProgressBar';
 import { WeekBadge } from '../components/WeekBadge';
 
@@ -8,6 +8,15 @@ function AdminDashboard() {
   const studentCount = users.filter(u => u.role !== 'admin').length;
   return (
     <div>
+      {/* Cohort Selector */}
+      <div className="flex items-center gap-3 mb-6">
+        <label className="text-sm font-medium text-gray-600">기수 선택:</label>
+        <select className="border rounded-lg px-3 py-1.5 text-sm bg-white" defaultValue="cohort-3">
+          <option value="cohort-3">3기 (진행 중)</option>
+          <option value="cohort-2" disabled>2기 (수료 완료)</option>
+          <option value="cohort-1" disabled>1기 (수료 완료)</option>
+        </select>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <div className="bg-white rounded-xl p-5 shadow-sm border"><div className="text-sm text-gray-500">기수</div><div className="text-2xl font-bold text-indigo-900">{cohort.name}</div></div>
         <div className="bg-white rounded-xl p-5 shadow-sm border"><div className="text-sm text-gray-500">팀 수</div><div className="text-2xl font-bold text-indigo-900">{teams.length}</div></div>
@@ -73,6 +82,35 @@ function StudentDashboard({ user }: { user: User }) {
           </div>
         </>
       )}
+
+      {/* My Submissions & Feedback */}
+      <h2 className="text-lg font-bold text-gray-900 mt-6 mb-4">내 제출물 & 피드백</h2>
+      <div className="bg-white rounded-xl p-6 shadow-sm border mb-6">
+        {submissions.filter(s => s.userId === user.userId).length === 0 ? (
+          <p className="text-gray-400 text-sm">아직 제출한 과제가 없습니다.</p>
+        ) : (
+          <div className="space-y-3">
+            {submissions.filter(s => s.userId === user.userId).map(s => (
+              <div key={s.submissionId} className="border rounded-lg p-4">
+                <div className="flex items-center justify-between">
+                  <span className="font-medium text-gray-900">{s.weekNumber}주차 과제</span>
+                  {s.feedback ? (
+                    <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">피드백 완료</span>
+                  ) : (
+                    <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">리뷰 대기</span>
+                  )}
+                </div>
+                <p className="text-sm text-gray-500 mt-1 line-clamp-1">{s.content}</p>
+                {s.feedback && (
+                  <div className="mt-2 bg-emerald-50 rounded p-2 text-sm text-emerald-700">
+                    💬 {s.feedback.comment} {s.feedback.score && `(${s.feedback.score}점)`}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       <h2 className="text-lg font-bold text-gray-900 mt-6 mb-4">다가오는 과제</h2>
       <div className="bg-white rounded-xl p-6 shadow-sm border">

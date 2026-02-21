@@ -64,16 +64,19 @@ export function Layout({ user, role, onSwitchRole, onLogout }: LayoutProps) {
         <header className="bg-white border-b px-6 py-3 flex items-center justify-between shrink-0">
           <div className="md:hidden font-bold text-indigo-900">🎓 AI 슈퍼워크샵</div>
           <div className="flex items-center gap-4">
-            {/* Role Switcher (dev tool) */}
-            <select
-              value={role}
-              onChange={e => onSwitchRole(e.target.value as Role)}
-              className="text-xs border rounded px-2 py-1 bg-gray-50"
-            >
-              <option value="admin">관리자</option>
-              <option value="team_lead">팀 리더</option>
-              <option value="student">수강생</option>
-            </select>
+            {/* Role Switcher (dev only) */}
+            {import.meta.env.DEV && (
+              <select
+                value={role}
+                onChange={e => onSwitchRole(e.target.value as Role)}
+                className="text-xs border rounded px-2 py-1 bg-yellow-50 text-yellow-700"
+                title="개발 모드 전용"
+              >
+                <option value="admin">🔧 관리자</option>
+                <option value="team_lead">🔧 팀 리더</option>
+                <option value="student">🔧 수강생</option>
+              </select>
+            )}
             <span className="text-sm text-gray-600">{user.displayName}</span>
             <button onClick={onLogout} className="text-sm text-red-500 hover:text-red-700">로그아웃</button>
           </div>
